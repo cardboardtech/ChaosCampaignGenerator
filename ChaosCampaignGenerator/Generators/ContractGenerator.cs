@@ -1,7 +1,7 @@
 using ChaosCampaignGenerator.Contracts;
 using ChaosCampaignGenerator.Employers;
 
-namespace ChaosCampaignGenerator;
+namespace ChaosCampaignGenerator.Generators;
 
 public class ContractGenerator
 {
@@ -15,6 +15,28 @@ public class ContractGenerator
     public Contract GenerateContract()
     {
         Contract contract = GetContractType();
+
+        PopulateContract(contract);
+
+        contract.Terrain = GetTerrain();
+
+        return contract;
+    }
+
+    public Contract GenerateOpposingContract(Contract primaryContract)
+    {
+        Contract contract = GetOpposingContractType(primaryContract);
+
+        PopulateContract(contract);
+
+        contract.Length = primaryContract.Length;
+        contract.Terrain = primaryContract.Terrain;
+
+        return contract;
+    }
+
+    private void PopulateContract(Contract contract)
+    {
         Employer employer = GetEmployer();
 
         contract.Employer = employer;
@@ -23,8 +45,6 @@ public class ContractGenerator
         contract.SalvageRights = GetSalvageRights(contract.SalvageRightsModifier, employer.SalvageRightsModifier);
         contract.SupportRights = GetSupportRights(contract.SupportRightsModifier, employer.SupportRightsModifier);
         contract.TransportationTerms = GetTransportationTerms(contract.TransportationTermsModifier, employer.TransportationTermsModifier);
-
-        return contract;
     }
 
     private Contract GetContractType()
@@ -41,23 +61,76 @@ public class ContractGenerator
         //local functions
         Contract GetExpeditionType()
         {
-            Contract expedition = _dice.Roll(2) switch
+            return _dice.Roll(2) switch
             {
                 <= 8 => new Expedition(),
                 >= 9 and <= 11 => new PirateHunt(),
                 >= 12 => new GuerillaOperation()
             };
-            return expedition;
         }
 
         Contract GetGarrisonType()
         {
-            Contract garrison = _dice.Roll(2) switch
+            return _dice.Roll(2) switch
             {
                 <= 5 => new CadreDuty(),
                 >= 6 => new Garrison()
             };
-            return garrison;
+        }
+    }
+
+    private Contract GetOpposingContractType(Contract primaryContract)
+    {
+        Contract opposingContractType = primaryContract switch
+        {
+            Expedition => GetExpeditionOpposition(),
+            Garrison => GetGarrisonOpposition(),
+            Raid => GetRaidOpposition(),
+            Invasion => GetInvasionOpposition(),
+            _ => throw new Exception()
+        };
+        return opposingContractType;
+
+        //Local Functions
+        Contract GetExpeditionOpposition()
+        {
+            return _dice.Roll(2) switch
+            {
+                <= 8 => new Garrison(),
+                >= 9 => new Raid()
+            };
+        }
+
+        Contract GetGarrisonOpposition()
+        {
+            return _dice.Roll(2) switch
+            {
+                <= 4 => new Expedition(),
+                >= 5 and <= 8 => new Raid(),
+                >= 9 => new Invasion()
+            };
+        }
+
+        Contract GetRaidOpposition()
+        {
+            return _dice.Roll(2) switch
+            {
+                <= 7 => new Expedition(),
+                >= 8 and <= 10 => new Garrison(),
+                11 => new Raid(),
+                >= 12 => new Invasion()
+            };
+        }
+
+        Contract GetInvasionOpposition()
+        {
+            return _dice.Roll(2) switch
+            {
+                <= 4 => new Expedition(),
+                >= 5 and <= 8 => new Garrison(),
+                9 => new Raid(),
+                >= 10 => new Invasion()
+            };
         }
     }
 
@@ -164,5 +237,24 @@ public class ContractGenerator
             > 9 => 9,
             _ => adjustedStep
         };
+    }
+
+    private TerrainType GetTerrain()
+    {
+        TerrainType terrain = _dice.Roll(2) switch
+        {
+            2 => TerrainType.Desert,
+            3 => TerrainType.Wetlands,
+            4 => TerrainType.LightUrban,
+            5 => TerrainType.Hills,
+            6 => TerrainType.Wooded,
+            7 => TerrainType.Grasslands,
+            8 => TerrainType.Savannahs,
+            9 or 11 => TerrainType.Urban,
+            10 => TerrainType.Mountains,
+            12 => TerrainType.Alien,
+            _ => throw new Exception()
+        };
+        return terrain;
     }
 }

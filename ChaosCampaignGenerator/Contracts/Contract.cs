@@ -16,22 +16,15 @@ public abstract class Contract
     public virtual int SalvageRightsModifier { get; }
     public virtual int SupportRightsModifier { get; }
     public virtual int TransportationTermsModifier { get; }
+    public TerrainType Terrain { get; set; }
+    public Contract? OpposingContract { get; set; }
+    public List<Track> Tracks { get; }
 
     public Contract()
     {
         Employer = new Self();
+        Tracks = [];
     }
 
-    public override string ToString()
-    {
-        return $@"
-Employer: {Employer}
-Type of Action: {GetType().Name}
-Length of Contract: {Length} months
-Base Pay: {Tables.ContractTermsTable.BasePaySteps[BasePay]} ({BasePay})
-Support: {Tables.ContractTermsTable.SupportRightsSteps[SupportRights]} ({SupportRights})
-Transportation: {Tables.ContractTermsTable.TransportationTermsSteps[TransportationTerms]} ({TransportationTerms})
-Salvage Rights: {Tables.ContractTermsTable.SalvageRightsSteps[SalvageRights]} ({SalvageRights})
-Command Rights: {Tables.ContractTermsTable.CommandRightsSteps[CommandRights]} ({CommandRights})";
-    }
+    public override string ToString() => GetType().Name;
 }
