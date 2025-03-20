@@ -28,6 +28,9 @@ public class ContractWriter
             contractNumber++;
         }
 
+        Console.WriteLine("--------------------");
+
+        //Local Function
         void WriteContract(Contract contract)
         {
             string contractTermsString = GetContractTermsString(contract);
