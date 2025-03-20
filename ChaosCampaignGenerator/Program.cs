@@ -6,7 +6,7 @@ int input;
 Console.Write("Number of Contracts to Generate: ");
 while (!int.TryParse(Console.ReadLine(), out input) || input <= 0)
 {
-    Console.Write("Please enter a number greater greater than zero: ");
+    Console.Write("Please enter a number greater than zero: ");
 }
 
 var contractGenerator = new ContractGenerator(new Dice());
