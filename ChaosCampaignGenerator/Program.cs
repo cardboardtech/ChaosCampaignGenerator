@@ -25,3 +25,5 @@ for (int i = 0; i < input; i++)
 
 var writer = new ContractWriter();
 writer.WriteToConsole(contracts);
+
+Console.ReadLine();

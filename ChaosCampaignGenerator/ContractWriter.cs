@@ -12,14 +12,14 @@ public class ContractWriter
         foreach (Contract contract in contracts)
         {
             Console.WriteLine("--------------------");
-            Console.WriteLine($"Primary Contract {contractNumber}");
+            Console.WriteLine($"Primary Contract {contractNumber} - {contract}");
 
             WriteContract(contract);
 
             if (contract.OpposingContract != null)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Opposing Contract {contractNumber}");
+                Console.WriteLine($"Opposing Contract {contractNumber} - {contract}");
 
                 WriteContract(contract.OpposingContract);
             }
