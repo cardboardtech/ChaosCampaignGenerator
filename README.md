@@ -9,8 +9,8 @@ Download the ChasCampaignGenerator.exe file from Releases then execute the progr
 The current release has the basic functionality of creating a random contract based on the rules in "BattleTech: Hot Spots: Hinterlands". For every contract you request to generate it will generate a Primary and an Opposing Contract. At the moment there is no build in fluff, so for Employers it will generate something like "House Government" and not "Federated Suns".
 
 ## Roadmap
-* Assign Tracks to a Month
 * Generate Command Complications based on type of Contract, Primary Terrain, and Employer
+* Options for increasing intensity of a contract
 * Fluff
   * Specific canon/non-canon Employers for the different Houses, nobles, corporations, mercenaries, and civilian organizations
   * More specific locations beyond primary terrain.
