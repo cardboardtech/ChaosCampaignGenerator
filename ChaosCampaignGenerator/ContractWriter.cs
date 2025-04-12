@@ -4,7 +4,7 @@ namespace ChaosCampaignGenerator;
 
 public class ContractWriter
 {
-    private const string _trackFormat = "{0,-18} ({1}/{2})";
+    private const string _trackFormat = "{0, -5} {1,-18} ({2}/{3})";
 
     public void WriteToConsole(List<Contract> contracts)
     {
@@ -19,7 +19,7 @@ public class ContractWriter
             if (contract.OpposingContract != null)
             {
                 Console.WriteLine();
-                Console.WriteLine($"Opposing Contract {contractNumber} - {contract}");
+                Console.WriteLine($"Opposing Contract {contractNumber} - {contract.OpposingContract}");
 
                 WriteContract(contract.OpposingContract);
             }
@@ -41,8 +41,8 @@ public class ContractWriter
                 PirateHunt? pirateHunt = contract as PirateHunt;
 
                 Console.WriteLine();
-                Console.WriteLine(string.Format(_trackFormat, pirateHunt == null ? "Tracks" : "Expedition Tracks", "Attacker", "Defender"));
-                foreach (Track track in contract.Tracks)
+                Console.WriteLine(string.Format(_trackFormat, "Month", pirateHunt == null ? "Tracks" : "Expedition Tracks", "Attacker", "Defender"));
+                foreach (Track track in contract.Tracks.OrderBy(x => x.Month))
                 {
                     Console.WriteLine(GetTrackString(track));
                 }
@@ -78,7 +78,7 @@ Command Rights: {Tables.ContractTermsTable.CommandRightsSteps[contract.CommandRi
 
     private static string GetTrackString(Track track)
     {
-        string trackString = string.Format(_trackFormat, track.TrackType, track.Attacker, track.Defender);
+        string trackString = string.Format(_trackFormat, track.Month, track.TrackType, track.Attacker, track.Defender);
 
         return trackString;
     }

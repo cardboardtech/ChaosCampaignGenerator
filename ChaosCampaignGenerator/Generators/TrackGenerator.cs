@@ -25,7 +25,13 @@ public class TrackGenerator
                 Invasion => CreateInvasionTrack(),
                 _ => throw new Exception()
             };
+            track.Month = SetMonth();
             contract.Tracks.Add(track);
+        }
+
+        if (contract is PirateHunt pirateHunt)
+        {
+            GeneratePirateHuntRaidTracks(pirateHunt);
         }
 
         if (numberOfTracks == 0
@@ -33,11 +39,6 @@ public class TrackGenerator
             && contract.OpposingContract != null)
         {
             GenerateTracks(contract.OpposingContract);
-        }
-
-        if (contract is PirateHunt pirateHunt)
-        {
-            GeneratePirateHuntRaidTracks(pirateHunt);
         }
 
         //Local Functions
@@ -80,6 +81,17 @@ public class TrackGenerator
                 Track track = CreateRaidTrack();
                 pirateHunt.RaidTracks.Add(track);
             }
+        }
+
+        int SetMonth()
+        {
+            int month = _dice.Roll(maxValue: contract.Length);
+            if (contract.Tracks.Count(x => x.Month == month) >= 3)
+            {
+                return SetMonth();
+            }
+
+            return month;
         }
     }
 
