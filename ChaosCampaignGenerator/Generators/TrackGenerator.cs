@@ -26,6 +26,7 @@ public class TrackGenerator
                 _ => throw new Exception()
             };
             track.Month = SetMonth();
+            track.Mapsheets.AddRange(SetMapsheets());
             contract.Tracks.Add(track);
         }
 
@@ -92,6 +93,22 @@ public class TrackGenerator
             }
 
             return month;
+        }
+
+        IEnumerable<int> SetMapsheets()
+        {
+            List<int> maps = [1, 2, 3, 4, 5, 6];
+            List<int> results = [];
+
+            var random = new Random();
+            for (int i = 0; i < contract.Scale; i++)
+            {
+                int sheet = random.Next(maps.Count - 1);
+                results.Add(maps[sheet]);
+                maps.RemoveAt(sheet);
+            }
+
+            return results;
         }
     }
 

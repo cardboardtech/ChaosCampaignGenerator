@@ -4,7 +4,7 @@ namespace ChaosCampaignGenerator;
 
 public class ContractWriter
 {
-    private const string _trackFormat = "{0, -5} {1,-18} ({2}/{3})";
+    private const string _trackFormat = "{0, -5} {1,-18} {2, -12} {3, -12} {4}";
 
     public void WriteToConsole(List<Contract> contracts)
     {
@@ -41,10 +41,10 @@ public class ContractWriter
                 PirateHunt? pirateHunt = contract as PirateHunt;
 
                 Console.WriteLine();
-                Console.WriteLine(string.Format(_trackFormat, "Month", pirateHunt == null ? "Tracks" : "Expedition Tracks", "Attacker", "Defender"));
+                Console.WriteLine(string.Format(_trackFormat, "Month", pirateHunt == null ? "Tracks" : "Expedition Tracks", "Attacker", "Defender", "Mapsheets"));
                 foreach (Track track in contract.Tracks.OrderBy(x => x.Month))
                 {
-                    Console.WriteLine(GetTrackString(track));
+                    Console.WriteLine(GetTrackString(track, contract.Terrain));
                 }
 
                 if (pirateHunt != null)
@@ -53,7 +53,7 @@ public class ContractWriter
                     Console.WriteLine("Raid Tracks");
                     foreach (Track track in pirateHunt.RaidTracks)
                     {
-                        Console.WriteLine(GetTrackString(track));
+                        Console.WriteLine(GetTrackString(track, contract.Terrain));
                     }
                 }
             }
@@ -76,9 +76,14 @@ Command Rights: {Tables.ContractTermsTable.CommandRightsSteps[contract.CommandRi
         return contractString;
     }
 
-    private static string GetTrackString(Track track)
+    private static string GetTrackString(Track track, TerrainType terrain)
     {
-        string trackString = string.Format(_trackFormat, track.Month, track.TrackType, track.Attacker, track.Defender);
+        string trackString = string.Format(_trackFormat,
+            track.Month,
+            track.TrackType,
+            track.Attacker,
+            track.Defender,
+            string.Join(" | ", track.Mapsheets.Select(x => Tables.TerrainTables.Terrain[terrain][x])));
 
         return trackString;
     }
