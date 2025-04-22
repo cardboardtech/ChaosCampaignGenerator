@@ -32,5 +32,5 @@ public enum TerrainType
     Savannahs,
     Urban,
     Wetlands,
-    Wooded,
+    Wooded
 }

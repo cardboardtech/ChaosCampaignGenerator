@@ -5,6 +5,7 @@ namespace ChaosCampaignGenerator.Contracts;
 public abstract class Contract
 {
     public Employer Employer { get; set; }
+    public int Scale { get; set; } = 1;
     public int Length { get; set; }
     public int BasePay { get; set; }
     public int CommandRights { get; set; }
