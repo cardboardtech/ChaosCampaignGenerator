@@ -67,6 +67,8 @@ $@"Employer: {contract.Employer}
 Type of Action: {contract}
 Length of Contract: {contract.Length} months
 Location (Primary Terrain): {contract.Terrain}
+Intensity (Number of Tracks): {contract.Tracks.Count}
+
 Base Pay: {Tables.ContractTermsTable.BasePaySteps[contract.BasePay]} ({contract.BasePay})
 Support: {Tables.ContractTermsTable.SupportRightsSteps[contract.SupportRights]} ({contract.SupportRights})
 Transportation: {Tables.ContractTermsTable.TransportationTermsSteps[contract.TransportationTerms]} ({contract.TransportationTerms})
